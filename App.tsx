@@ -96,13 +96,15 @@ const App: React.FC = () => {
       {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-20">
         <div className="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-red-600/20">
+            <div className="flex items-center gap-2.5 flex-1 min-w-0 mr-4">
+                <div className="w-8 h-8 bg-red-600 rounded-lg flex-shrink-0 flex items-center justify-center text-white shadow-lg shadow-red-600/20">
                     <Lock className="w-5 h-5" />
                 </div>
-                <span className="font-bold text-xl tracking-tight text-gray-900">Secure<span className="text-red-600">Gen</span></span>
+                <span className="font-bold text-xs md:text-lg tracking-tight text-gray-900 truncate leading-tight">
+                  HighWind's Super Elite Supremely Useful <span className="text-red-600 block md:inline">- Password Generator</span>
+                </span>
             </div>
-            <nav className="flex gap-1 bg-gray-100 p-1 rounded-lg">
+            <nav className="flex gap-1 bg-gray-100 p-1 rounded-lg flex-shrink-0">
                 <button 
                     onClick={() => setMode('standard')}
                     className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${mode === 'standard' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
