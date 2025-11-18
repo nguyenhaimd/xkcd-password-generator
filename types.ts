@@ -1,3 +1,4 @@
+
 export enum PasswordType {
   RANDOM = 'RANDOM',
   MEMORABLE = 'MEMORABLE' // AI Powered
@@ -27,4 +28,13 @@ export interface AIPassphraseConfig {
   theme: string;
   includeNumber: boolean;
   capitalize: boolean;
+}
+
+export interface QuizCard {
+  id: string;
+  chapter: string; // e.g., "Chapter 1: Foundations"
+  category: string; // e.g., "The DOM"
+  question: string;
+  answer: string;
+  codeSnippet?: string; // Optional code example
 }

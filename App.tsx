@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { PasswordConfig, AIPassphraseConfig, HistoryItem, PasswordType } from './types';
 import { generateClientSidePassword, calculateStrength } from './utils/passwordUtils';
@@ -6,7 +7,8 @@ import PasswordDisplay from './components/PasswordDisplay';
 import Controls from './components/Controls';
 import AIControls from './components/AIControls';
 import History from './components/History';
-import { Lock, Sparkles } from 'lucide-react';
+import QuizMode from './components/QuizMode';
+import { Lock, Sparkles, GraduationCap } from 'lucide-react';
 
 const App: React.FC = () => {
   // Standard Generator State
@@ -30,7 +32,7 @@ const App: React.FC = () => {
   });
 
   const [password, setPassword] = useState<string>('');
-  const [mode, setMode] = useState<'standard' | 'ai'>('standard');
+  const [mode, setMode] = useState<'standard' | 'ai' | 'learn'>('standard');
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -95,62 +97,90 @@ const App: React.FC = () => {
       
       {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-20">
-        <div className="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
             <div className="flex items-center gap-2.5 flex-1 min-w-0 mr-4">
                 <div className="w-8 h-8 bg-red-600 rounded-lg flex-shrink-0 flex items-center justify-center text-white shadow-lg shadow-red-600/20">
                     <Lock className="w-5 h-5" />
                 </div>
                 <span className="font-bold text-lg tracking-tight text-gray-900 truncate">
-                  HighWind's Fabulous <span className="text-red-600">Password Generator</span>
+                  HighWind's Fabulous <span className="text-red-600">Pass Gen</span>
                 </span>
             </div>
-            <nav className="flex gap-1 bg-gray-100 p-1 rounded-lg flex-shrink-0">
+            <nav className="flex gap-1 bg-gray-100 p-1 rounded-lg flex-shrink-0 overflow-x-auto no-scrollbar">
                 <button 
                     onClick={() => setMode('standard')}
-                    className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${mode === 'standard' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                    className={`px-3 md:px-4 py-1.5 text-sm font-medium rounded-md transition-all whitespace-nowrap ${mode === 'standard' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
                 >
                     Standard
                 </button>
                  <button 
                     onClick={() => setMode('ai')}
-                    className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all flex items-center gap-2 ${mode === 'ai' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                    className={`px-3 md:px-4 py-1.5 text-sm font-medium rounded-md transition-all flex items-center gap-2 whitespace-nowrap ${mode === 'ai' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
                 >
                     <Sparkles className="w-3.5 h-3.5" />
                     XKCD Mode
+                </button>
+                <button 
+                    onClick={() => setMode('learn')}
+                    className={`px-3 md:px-4 py-1.5 text-sm font-medium rounded-md transition-all flex items-center gap-2 whitespace-nowrap ${mode === 'learn' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                >
+                    <GraduationCap className="w-3.5 h-3.5" />
+                    Learn
                 </button>
             </nav>
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 mt-8">
+      <main className={`mx-auto px-4 mt-8 ${mode === 'learn' ? 'max-w-6xl' : 'max-w-3xl'}`}>
         
-        {/* Display Section */}
-        <div className="mb-8">
-            <PasswordDisplay 
-                password={password} 
-                loading={loading}
-                onRefresh={mode === 'standard' ? generateStandard : generateAI}
-            />
-        </div>
-
-        {/* Controls Section */}
-        <div className="transition-all duration-300 ease-in-out">
-            {mode === 'standard' ? (
-                <Controls config={config} onChange={setConfig} />
-            ) : (
-                <AIControls 
-                    config={aiConfig} 
-                    onChange={setAiConfig} 
-                    onGenerate={generateAI} 
-                    loading={loading} 
+        {mode === 'learn' ? (
+          <QuizMode />
+        ) : (
+          <>
+            {/* Display Section */}
+            <div className="mb-8">
+                <PasswordDisplay 
+                    password={password} 
+                    loading={loading}
+                    onRefresh={mode === 'standard' ? generateStandard : generateAI}
                 />
-            )}
-        </div>
+            </div>
 
-        {/* History Section */}
-        <History items={history} onClear={() => setHistory([])} />
+            {/* Controls Section */}
+            <div className="transition-all duration-300 ease-in-out">
+                {mode === 'standard' ? (
+                    <Controls config={config} onChange={setConfig} />
+                ) : (
+                    <AIControls 
+                        config={aiConfig} 
+                        onChange={setAiConfig} 
+                        onGenerate={generateAI} 
+                        loading={loading} 
+                    />
+                )}
+            </div>
+
+            {/* History Section */}
+            <History items={history} onClear={() => setHistory([])} />
+          </>
+        )}
 
       </main>
+      
+      <style>{`
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        .preserve-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+      `}</style>
     </div>
   );
 };
