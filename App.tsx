@@ -100,8 +100,8 @@ const App: React.FC = () => {
                 <div className="w-8 h-8 bg-red-600 rounded-lg flex-shrink-0 flex items-center justify-center text-white shadow-lg shadow-red-600/20">
                     <Lock className="w-5 h-5" />
                 </div>
-                <span className="font-bold text-xs md:text-lg tracking-tight text-gray-900 truncate leading-tight">
-                  HighWind's Super Elite Supremely Useful <span className="text-red-600 block md:inline">- Password Generator</span>
+                <span className="font-bold text-lg tracking-tight text-gray-900 truncate">
+                  HighWind's Fabulous <span className="text-red-600">Password Generator</span>
                 </span>
             </div>
             <nav className="flex gap-1 bg-gray-100 p-1 rounded-lg flex-shrink-0">
